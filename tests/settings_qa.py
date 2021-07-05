@@ -1,4 +1,4 @@
-from api_yamdb.api_yamdb.settings import *
+from api_yamdb.settings import *
 
 DATABASES = {
     'default': {

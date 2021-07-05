@@ -10,10 +10,10 @@ from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 from rest_framework_simplejwt.tokens import RefreshToken
 
-from api_yamdb.api.filters import TitleFilter
-from api_yamdb.api.models import Category, Genre, Review, Title, User
-from api_yamdb.api.permissions import IsStaffOrOwner, IsSuperuser, IsSuperuserOrReadOnly
-from api_yamdb.api import (AuthSerializer, CategorySerializer,
+from api.filters import TitleFilter
+from api.models import Category, Genre, Review, Title, User
+from api.permissions import IsStaffOrOwner, IsSuperuser, IsSuperuserOrReadOnly
+from api.serializers import (AuthSerializer, CategorySerializer,
                            CommentSerializer, EmailSerializer,
                            GenreSerializer, ReviewSerializer,
                            TitleSerializer, TitleWriteSerializer,
