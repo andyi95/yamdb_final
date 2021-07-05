@@ -14,10 +14,10 @@ from api.filters import TitleFilter
 from api.models import Category, Genre, Review, Title, User
 from api.permissions import IsStaffOrOwner, IsSuperuser, IsSuperuserOrReadOnly
 from api.serializers import (AuthSerializer, CategorySerializer,
-                           CommentSerializer, EmailSerializer,
-                           GenreSerializer, ReviewSerializer,
-                           TitleSerializer, TitleWriteSerializer,
-                           UserSerializer)
+                             CommentSerializer, EmailSerializer,
+                             GenreSerializer, ReviewSerializer,
+                             TitleSerializer, TitleWriteSerializer,
+                             UserSerializer)
 
 
 class GetPostDelViewSet(mixins.ListModelMixin,
