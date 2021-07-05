@@ -26,7 +26,6 @@ services:
       - db
     env_file:
       - .env
-  # Серьёзный выигрыш дискового пространства
   nginx:
     image: nginx:1.19.9-alpine
     restart: always
