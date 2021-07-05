@@ -1,4 +1,5 @@
 # Yamdb API Final
+[![Yamdb app workflow](https://github.com/andyi95/yamdb_final/actions/workflows/main.yml/badge.svg)](https://github.com/andyi95/yamdb_final/actions/workflows/main.yml)
 ## Описание
 
 **YAMDB** собирает отзывы пользователей на произведения, делящиеся на произвольные  категории и жанры, которые можно добавлять самостоятельно.
