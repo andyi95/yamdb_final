@@ -5,7 +5,7 @@ project content
 """
 from django.contrib import admin
 
-from api.models import Category, Comment, Genre, Review, Title, User
+from api_yamdb.api.models import Category, Comment, Genre, Review, Title, User
 
 
 class UserAdmin(admin.ModelAdmin):

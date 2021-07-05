@@ -13,7 +13,7 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data/
     env_file:
-      - ./.env
+      - api_yamdb/.env
   web:
     image: andyi95/yamdb_final
     restart: always
@@ -25,7 +25,7 @@ services:
     depends_on:
       - db
     env_file:
-      - ./.env
+      - api_yamdb/.env
   # Серьёзный выигрыш дискового пространства
   nginx:
     image: nginx:1.19.9-alpine
@@ -37,6 +37,6 @@ services:
     - static_value:/var/html/static/
     - media_value:/var/html/media/
     env_file:
-      - ./.env
+      - api_yamdb/.env
     depends_on:
       - web
