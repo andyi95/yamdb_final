@@ -76,9 +76,8 @@ jobs:
               echo DEBUG_MODE="$debug_mode" >> .env
             else
               echo "DEBUG_MODE=FALSE" >> .env
+            fi
             sudo docker-compose up -d
-          env:
-            HOSTS_LIST: ${{ secrets.HOSTS_LIST }}
   send_message:
     runs-on: ubuntu-latest
     needs: deploy
