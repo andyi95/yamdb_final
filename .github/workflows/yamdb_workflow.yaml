@@ -67,8 +67,8 @@ jobs:
             echo POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }} >> .env
             echo DB_HOST=${{ secrets.DB_HOST }} >> .env
             echo DB_PORT=${{ secrets.DB_PORT }} >> .env
-            hosts_list = ${{ secrets.HOSTS_LIST }}
-            debug_mode = ${{ secrets.DEBUG_MODE }}
+            hosts_list=${{ secrets.HOSTS_LIST }}
+            debug_mode=${{ secrets.DEBUG_MODE }}
             [[ "$hosts_list" ]] && echo HOSTS_LIST=$hosts_list >> .env || echo "HOSTS_LIST=127.0.0.1 localhost" >> .env
             [[ "$debug_mode" == "TRUE" ]] && echo DEBUG_MODE=$debug_mode >> .env || echo "DEBUG_MODE=FALSE" >> .env
             if [ "$debug_mode" == "TRUE" ]
