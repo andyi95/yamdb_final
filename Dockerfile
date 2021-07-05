@@ -10,8 +10,6 @@ COPY requirements.txt requirements.txt
 
 RUN pip install --upgrade pip && pip install -r /code/requirements.txt
 
-# Накатили слой с установленными pip пакетами, после чего можно копировать
-# всё остальное
 COPY . .
 
 CMD gunicorn api_yamdb.wsgi:application --bind 0.0.0.0:8000
