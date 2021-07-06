@@ -25,7 +25,6 @@ jobs:
         touch .env
         echo SECRET_KEY="${{ secrets.SECRET_KEY }}" >> .env
         pytest
-
   build_and_push_to_docker_hub:
     name: Push Docker image to Docker Hub
     runs-on: ubuntu-latest
@@ -56,30 +55,44 @@ jobs:
           username: ${{ secrets.USER }}
           key: ${{ secrets.SSH_KEY }}
           script: |
-            sudo docker pull andyi95/yamdb_final
-            sudo docker stop $(sudo docker ps -a -q)
-            sudo docker-compose stop
-            sudo docker-compose rm web
+            # docker отлично запускается с правами текущего пользователя
+            docker-compose down
+            docker stop $(docker ps -a -q)
+            docker rm $(docker ps -a -q)
+            docker rmi $(docker images -q)
             touch .env
-            echo SECRET_KEY="${{ secrets.SECRET_KEY }}" >> .env
-            echo DB_ENGINE=${{ secrets.DB_ENGINE }} >> .env
-            echo POSTGRES_DB=${{ secrets.DB_NAME }} >> .env
-            echo POSTGRES_USER=${{ secrets.POSTGRES_USER }} >> .env
-            echo POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }} >> .env
-            echo DB_HOST=${{ secrets.DB_HOST }} >> .env
+            # перед тем, как записывать новые строки стоит проверить их наличие
+            if ! grep -q "SECRET_KEY" .env ; then
+              echo SECRET_KEY="${{ secrets.SECRET_KEY }}" >> .env
+            fi
+            if ! grep -q "DB_ENGINE" .env ; then
+              echo DB_ENGINE=${{ secrets.DB_ENGINE }} >> .env
+            fi
+            if ! grep -q "POSTGRES_DB" .env ; then
+              echo POSTGRES_DB=${{ secrets.DB_NAME }} >> .env
+            fi
+            if ! grep -q "POSTGRES_USER" .env ; then
+              echo POSTGRES_USER=${{ secrets.POSTGRES_USER }} >> .env
+            fi
+            if ! grep -q "POSTGRES_PASSWORD" .env ; then
+              echo POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }} >> .env
+            fi
+            if ! grep -q "DB_HOST" .env ; then
+              echo DB_HOST=${{ secrets.DB_HOST }} >> .env
+            fi
+            if ! grep -q "DB_PORT" .env ; then
             echo DB_PORT=${{ secrets.DB_PORT }} >> .env
-            hosts_list = ${{ secrets.HOSTS_LIST }}
-            debug_mode = ${{ secrets.DEBUG_MODE }}
+            fi
+            if ! grep -q "HOSTS_LIST" .env ; then
+              hosts_list=${{ secrets.HOSTS_LIST }}
+            fi
+            if ! grep -q "DEBUG_MODE" .env ; then
+              debug_mode=${{ secrets.DEBUG_MODE }}
+            fi
             [[ "$hosts_list" ]] && echo HOSTS_LIST=$hosts_list >> .env || echo "HOSTS_LIST=127.0.0.1 localhost" >> .env
             [[ "$debug_mode" == "TRUE" ]] && echo DEBUG_MODE=$debug_mode >> .env || echo "DEBUG_MODE=FALSE" >> .env
-#            if [ "$debug_mode" == "TRUE" ]
-#            then
-#              echo DEBUG_MODE="$debug_mode" >> .env
-#            else
-#              echo "DEBUG_MODE=FALSE" >> .env
-#            sudo docker-compose up -d
-#          env:
-#            HOSTS_LIST: ${{ secrets.HOSTS_LIST }}
+            docker pull andyi95/yamdb_final
+            docker-compose up -d
   send_message:
     runs-on: ubuntu-latest
     needs: deploy

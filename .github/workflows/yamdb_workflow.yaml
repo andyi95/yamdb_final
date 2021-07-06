@@ -60,7 +60,6 @@ jobs:
             docker stop $(docker ps -a -q)
             docker rm $(docker ps -a -q)
             docker rmi $(docker images -q)
-            docker pull andyi95/yamdb_final
             touch .env
             # перед тем, как записывать новые строки стоит проверить их наличие
             if ! grep -q "SECRET_KEY" .env ; then
@@ -92,7 +91,7 @@ jobs:
             fi
             [[ "$hosts_list" ]] && echo HOSTS_LIST=$hosts_list >> .env || echo "HOSTS_LIST=127.0.0.1 localhost" >> .env
             [[ "$debug_mode" == "TRUE" ]] && echo DEBUG_MODE=$debug_mode >> .env || echo "DEBUG_MODE=FALSE" >> .env
-
+            docker pull andyi95/yamdb_final
             docker-compose up -d
   send_message:
     runs-on: ubuntu-latest
