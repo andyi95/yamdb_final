@@ -8,12 +8,11 @@ load_dotenv()
 os.environ['DJANGO_SETTINGS_MODULE'] = 'api_yamdb.settings'
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-SECRET_KEY = os.getenv('SECRET_KEY')
-# Прописал параметр Debug в env, но c ним автотесты валятся
+# Make tests work again
+SECRET_KEY = 'jrwhqrtr5ZfuoAd9u5yURjuaHvZvpa24iqWhyGSHxAU7jBUfVb'
+
 DEBUG = False
 
-# Поскольку общение Django ограничивается лишь контейром web, то оставим его
-# и на всякий пожарный localhost :)
 ALLOWED_HOSTS = ['web', 'localhost', '127.0.0.1']
 
 INSTALLED_APPS = [
