@@ -1,3 +1,4 @@
+from api_yamdb import settings
 from api_yamdb.settings import *
 
 DATABASES = {
