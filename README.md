@@ -14,7 +14,9 @@
  - `DB_HOST`, `DB_PORT`  - имя контейнера и порт контейнера PostgreSQL сервера. При необходимости, возможна работа с PostgreSQL хост-машины, для конфигурации см. соответствующий [раздел](https://docs.docker.com/compose/networking/), посвященный настройке сети контейнеров.
   - `DB_NAME`, `POSTGRES_USER`, `POSTGRES_PASSWORD` - название базы данных, имя пользователя и пароль соответственно.
   - `HOST`, `USER`, `SSH_KEY`/`PASSWORD`, `PASSPHRASE` - адрес, имя пользователя и закрытый SSH-ключ (с парольной фразой при защите ключа) либо пароль, использующийся для подключения к удалённому серверу. Подробнее о параметрах развертывания по SSH можно узнать из репозитория [ssh-action](https://github.com/appleboy/ssh-action)
-  - `TELEGRAM_TOKEN`, `TELEGRAM_TO` - токен бота и id получателя для отправки Telegram-уведомлений. Инструкцию по созданию бота и получению необходимой информации можно из [докуменации Telegram](https://core.telegram.org/bots#6-botfather)
+  - `TELEGRAM_TOKEN`, `TELEGRAM_TO` - токен бота и id получателя для отправки Telegram-уведомлений. Инструкцию по созданию бота и получению необходимой информации можно из [докуменации Telegram](https://core.telegram.org/bots#6-botfather).
+  
+  В дальнейшем, вы можете вручную отредактировать файл `.env` в корне проекта, при повторном деплое уже значения не изменяются.
   
   
 #### Первичная конфигурация
@@ -55,18 +57,6 @@ docker system prune
 ```
 Необходимо учесть, что база данных и некоторые конфигурационные файлы остаются в *томах docker*. Для полного удаления всей оставшейся информации выполните команду `docker volume prune`
 
-### Конфигурация .env файла
- 
- Скопируйте или переименуйте `.env.sample` в `.env`.
- Поле `SECRET_KEY` используется для поддержки cookie-сессий и crsf-токенов. Для генерации нового значения можно использовать команду (из контейнера `web`, либо иного окружения с установленным python и Django):
- ```shell
-python -c 'from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())'
-``` 
-Полученное значение скопируйте в соответствующее поле.
-
-Поле `POSTGRES_DB` содержит название базы данных, поля `POSTGRES_USER`, `POSTGRES_PASSWORD` - имя пользователя и пароль соответственно. По умолчанию в поле `DB_HOST` и `DB_PORT` используется база данных контейнера `db` с портом 5432, но так же можно использовать и PostgreSQL сервер хост-машины. Подробнее о настройке доступа к сервисам хоста из контейнеров описано в [документации Docker](https://docs.docker.com/compose/networking/).
-
-Поле `HOSTS_LIST` определяет набор сетевых адресов, по которым будет производиться обращение к серверу (например, www.example.com, 109.210.52.211). Значение по умолчанию - "петлевой" адрес 127.0.0.1. Подробнее о назначении имён сервера можно узнать из [официальной документации Nginx](https://nginx.org/ru/docs/http/server_names.html)
 
 ## Авторы
 
@@ -84,4 +74,5 @@ python -c 'from django.core.management.utils import get_random_secret_key; print
  - [Nginx HTTP Server](https://nginx.org/ru/) | [docs](https://nginx.org/ru/docs/) | [GitHub](https://github.com/nginx/nginx/tree/branches/stable-1.12)
  - [Docker](https://docs.docker.com/) | [Github](https://github.com/docker)
  - [Docker Compose](https://docs.docker.com/compose/) | [Github](https://github.com/docker/compose)
+ - [GitHub Actions](https://github.com/features/actions) | [docs](https://github.com/features/actions)
  

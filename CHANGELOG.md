@@ -3,6 +3,8 @@
 ## 2021-07-06
 #### Added:
  - GitHub Workflow deployment
+ - Updated [README.md](README.md)
+ - 
 
 ## 2021-07-05
  - Moved to [yamdb_final](https://github.com/andyi95/yamdb_final) repository
