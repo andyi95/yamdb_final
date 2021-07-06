@@ -8,7 +8,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: Set up Python 
+    - name: Set up Python
       uses: actions/setup-python@v2
       with:
         python-version: 3.8
@@ -24,6 +24,7 @@ jobs:
         python -m flake8
         touch .env
         echo SECRET_KEY="${{ secrets.SECRET_KEY }}" >> .env
+        export PYTHONPATH=.
         pytest
   build_and_push_to_docker_hub:
     name: Push Docker image to Docker Hub
@@ -54,7 +55,6 @@ jobs:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USER }}
           key: ${{ secrets.SSH_KEY }}
-          stack_file_name: docker-compose.yaml
           script: |
             # docker отлично запускается с правами текущего пользователя
             docker-compose down

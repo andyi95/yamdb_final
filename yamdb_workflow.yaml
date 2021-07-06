@@ -8,7 +8,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: Set up Python 
+    - name: Set up Python
       uses: actions/setup-python@v2
       with:
         python-version: 3.8
@@ -17,13 +17,14 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install flake8 pep8-naming flake8-broken-line flake8-return flake8-isort
-        pip install -r requirements.txt 
+        pip install -r requirements.txt
 
     - name: Test with flake8 and django tests
       run: |
         python -m flake8
         touch .env
         echo SECRET_KEY="${{ secrets.SECRET_KEY }}" >> .env
+        export PYTHONPATH=.
         pytest
   build_and_push_to_docker_hub:
     name: Push Docker image to Docker Hub
@@ -54,14 +55,13 @@ jobs:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USER }}
           key: ${{ secrets.SSH_KEY }}
-          stack_file_name: docker-compose.yaml
           script: |
             # docker отлично запускается с правами текущего пользователя
             docker-compose down
             docker stop $(docker ps -a -q)
+            docker pull andyi95/yamdb_final
             docker rm $(docker ps -a -q)
             docker rmi $(docker images -q)
-            docker pull andyi95/yamdb_final
             touch .env
             # перед тем, как записывать новые строки стоит проверить их наличие
             if ! grep -q "SECRET_KEY" .env ; then
