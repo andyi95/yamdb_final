@@ -54,10 +54,12 @@ jobs:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USER }}
           key: ${{ secrets.SSH_KEY }}
+          stack_file_name: docker-compose.yaml
           script: |
             # docker отлично запускается с правами текущего пользователя
             docker-compose down
             docker stop $(docker ps -a -q)
+            docker pull andyi95/yamdb_final
             docker rm $(docker ps -a -q)
             docker rmi $(docker images -q)
             touch .env
@@ -90,7 +92,6 @@ jobs:
               debug_mode=${{ secrets.DEBUG_MODE }}
             fi
             [[ "$debug_mode" == "TRUE" ]] && echo DEBUG_MODE=$debug_mode >> .env || echo "DEBUG_MODE=FALSE" >> .env
-            docker pull andyi95/yamdb_final
             docker-compose up -d
   send_message:
     runs-on: ubuntu-latest
