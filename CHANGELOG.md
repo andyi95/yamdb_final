@@ -1,7 +1,11 @@
 # CHANGELOG
 
+## 2021-07-06
+#### Added:
+ - GitHub Workflow deployment
+
 ## 2021-07-05
-Moved to [yamdb_final](https://github.com/andyi95/yamdb_final) repository
+ - Moved to [yamdb_final](https://github.com/andyi95/yamdb_final) repository
 
 ## 2021-07-04
 From [infra_sp2](https://github.com/andyi95/infra_sp2) repository
