@@ -81,15 +81,14 @@ jobs:
               echo DB_HOST=${{ secrets.DB_HOST }} >> .env
             fi
             if ! grep -q "DB_PORT" .env ; then
-            echo DB_PORT=${{ secrets.DB_PORT }} >> .env
+              echo DB_PORT=${{ secrets.DB_PORT }} >> .env
             fi
             if ! grep -q "HOSTS_LIST" .env ; then
-              hosts_list=${{ secrets.HOSTS_LIST }}
+              echo HOSTS_LIST=${{ secrets.HOSTS_LIST }} >> .env
             fi
             if ! grep -q "DEBUG_MODE" .env ; then
               debug_mode=${{ secrets.DEBUG_MODE }}
             fi
-            [[ "$hosts_list" ]] && echo HOSTS_LIST=$hosts_list >> .env || echo "HOSTS_LIST=127.0.0.1 localhost" >> .env
             [[ "$debug_mode" == "TRUE" ]] && echo DEBUG_MODE=$debug_mode >> .env || echo "DEBUG_MODE=FALSE" >> .env
             docker pull andyi95/yamdb_final
             docker-compose up -d
