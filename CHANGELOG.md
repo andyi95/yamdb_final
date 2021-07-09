@@ -1,10 +1,19 @@
 # CHANGELOG
 
+## 2021-07-09
+
+#### Fixed:
+ - Fixed general code issues
+ - Finished and corrected [README in English](/README-en.md)
+ 
+#### Added:
+ - Copy base files on deploy
+ - Demo servers in Readme
+ 
 ## 2021-07-06
 #### Added:
  - GitHub Workflow deployment
  - Updated [README.md](README.md)
- - 
 
 ## 2021-07-05
  - Moved to [yamdb_final](https://github.com/andyi95/yamdb_final) repository
