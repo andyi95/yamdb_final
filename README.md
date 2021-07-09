@@ -1,3 +1,5 @@
+[en](README-en.md) | ru
+
 # Yamdb API Final
 [![Yamdb app workflow](https://github.com/andyi95/yamdb_final/actions/workflows/yamdb_workflow.yaml/badge.svg?branch=master)](https://github.com/andyi95/yamdb_final/actions/workflows/yamdb_workflow.yaml)
 ## Описание
@@ -5,7 +7,35 @@
 **YAMDB** собирает отзывы пользователей на произведения, делящиеся на произвольные  категории и жанры, которые можно добавлять самостоятельно.
 Оригинальный репозиторий проекта [andyi95/api_yamdb](https://github.com/andyi95/api_yamdb). Текущая версия проекта написана с поддержкой CI/CD инструментария [GitHub Actions](https://github.com/features/actions), Docker и Docker Compose. При создании использовался следующий стек технологий: Python3, Django Rest Framework, PostgreSQL, Gunicorn, Docker.
 
+## Демо-страница проекта
+
+С запущенным проектом можно ознакомиться по адресу http://yatube.blackberrystudio.com/
+Документация проекта http://yatube.blackberrystudio.com/redoc/
+
 ## Сборка и запуск проекта
+
+#### Установка Docker и Docker-compose
+
+*Применимо для дистрибутов Ubuntu, для установки на других ОС см. соответствующий раздел [документации Docker](https://docs.docker.com/get-docker/)*
+
+```shell
+# Установка необходимых пакетов для добавления стороннего репозитория
+sudo apt update
+sudo apt install \
+  apt-transport-https \
+  ca-certificates \
+  curl \
+  gnupg-agent \
+  software-properties-common -y
+# Установка GPG ключа и самого резопитория Docker
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+sudo apt update
+# Загрузка и установка пакетов Docker
+sudo apt install docker-ce docker-compose -y
+```
+Выполните перезагрузку и проверьте корректную работу Docker командами `service docker status` и `docker ps -a`. 
+
 
 #### Клонирование репозитория
 
@@ -15,9 +45,6 @@
   - `DB_NAME`, `POSTGRES_USER`, `POSTGRES_PASSWORD` - название базы данных, имя пользователя и пароль соответственно.
   - `HOST`, `USER`, `SSH_KEY`/`PASSWORD`, `PASSPHRASE` - адрес, имя пользователя и закрытый SSH-ключ (с парольной фразой при защите ключа) либо пароль, использующийся для подключения к удалённому серверу. Подробнее о параметрах развертывания по SSH можно узнать из репозитория [ssh-action](https://github.com/appleboy/ssh-action)
   - `TELEGRAM_TOKEN`, `TELEGRAM_TO` - токен бота и id получателя для отправки Telegram-уведомлений. Инструкцию по созданию бота и получению необходимой информации можно из [докуменации Telegram](https://core.telegram.org/bots#6-botfather).
-  
-  В дальнейшем, вы можете вручную отредактировать файл `.env` в корне проекта, при повторном деплое уже значения не изменяются.
-  
   
 #### Первичная конфигурация
 
@@ -55,6 +82,15 @@ docker-compose rm web
 ```
 Необходимо учесть, что база данных и некоторые конфигурационные файлы остаются в *томах docker*. Для полного удаления всей оставшейся информации выполните команду `docker volume prune`
 
+
+#### Возможные проблемы
+
+ - В некоторых случаях выполнение команд docker завершается ошибкой `docker: Got permission denied while trying to connect to the Docker daemon socket at...` - в таком случае необходимо создать группу `docker`  и добавить в неё текущего пользователя:
+ ```shell
+sudo groupadd docker
+sudo usermod -aG docker $USER
+ ```
+После этого необходимо перезапустить сеанс текущего пользователя для применения изменений или перезапустить машину.
 
 ## Авторы
 

@@ -8,8 +8,8 @@ load_dotenv()
 os.environ['DJANGO_SETTINGS_MODULE'] = 'api_yamdb.settings'
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-# Дефолтное значние, которое используется при прохождении автотестов Яндекс
-# после отправки проекта на проверку
+# Дефолтное значние, которое используется при прохождении автотестов -
+# поскольку у Яндекс нет доступа к ключам репозитория, тесты не проходятся
 SECRET_KEY = os.getenv(
     'SECRET_KEY', default='jrwhqrtr5ZfuoAd9u5yURjuaHvZvpa24iqWhyGSHxAU7jBUfVb'
 )
