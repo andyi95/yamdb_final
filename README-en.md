@@ -9,6 +9,10 @@ The project is built from repo [andyi95/api_yamdb](https://github.com/andyi95/ap
 
 Tech stack used in this project: Python3, Django Rest Framework, PostgreSQL, Gunicorn, Docker
 
+## Demo server
+
+A server with deployed and running project can be found by the following URL http://yatube.blackberrystudio.com/. You can read the API online docs [here](http://yatube.blackberrystudio.com/redoc).
+
 ## Build and deploy
 
 #### Docker and Docker-compose packages installation
