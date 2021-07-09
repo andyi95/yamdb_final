@@ -12,7 +12,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # после отправки проекта на проверку
 SECRET_KEY = os.getenv(
     'SECRET_KEY', default='jrwhqrtr5ZfuoAd9u5yURjuaHvZvpa24iqWhyGSHxAU7jBUfVb'
-                       )
+)
 
 
 DEBUG = False
