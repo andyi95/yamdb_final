@@ -58,10 +58,9 @@ jobs:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USER }}
           key: ${{ secrets.SSH_KEY }}
-          source: "docker-compose.yaml, nginx/templates"
+          source: "./docker-compose.yaml,./nginx"
           target: "~/"
           overwrite: true
-          strip_components: 2
       - name: executing remote ssh commands to deploy
         uses: appleboy/ssh-action@master
         with:
