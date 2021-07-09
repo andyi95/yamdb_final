@@ -59,7 +59,7 @@ jobs:
           username: ${{ secrets.USER }}
           key: ${{ secrets.SSH_KEY }}
           source: "./docker-compose.yaml,./nginx"
-          target: "~/"
+          target: /home/${{ secrets.USER }}/
           overwrite: true
       - name: executing remote ssh commands to deploy
         uses: appleboy/ssh-action@master
