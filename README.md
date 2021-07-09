@@ -50,10 +50,8 @@ docker exec web python manage.py loaddata fixtures.json
 ##### Остановка и удаление контейнеров
 
 ```shell
-docker-compose down
-docker rm $(docker ps -a -q)
-docker rmi $(docker images -q)
-docker system prune
+docker-compose stop
+docker-compose rm web
 ```
 Необходимо учесть, что база данных и некоторые конфигурационные файлы остаются в *томах docker*. Для полного удаления всей оставшейся информации выполните команду `docker volume prune`
 

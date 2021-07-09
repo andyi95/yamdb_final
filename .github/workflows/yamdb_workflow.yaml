@@ -27,6 +27,7 @@ jobs:
         pytest
   build_and_push_to_docker_hub:
     name: Push Docker image to Docker Hub
+    if: github.ref == 'refs/heads/master'
     runs-on: ubuntu-latest
     needs: tests
     steps:
@@ -48,6 +49,14 @@ jobs:
     runs-on: ubuntu-latest
     needs: build_and_push_to_docker_hub
     steps:
+      - name: copy base files via scp
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USER }}
+          key: ${{ secrets.SSH_KEY }}
+          source: "yamdb_forkflow,.github,nginx"
+          target: "."
       - name: executing remote ssh commands to deploy
         uses: appleboy/ssh-action@master
         with:
@@ -56,13 +65,9 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           stack_file_name: docker-compose.yaml
           script: |
-            # docker отлично запускается с правами текущего пользователя
-            docker-compose down
-            docker stop $(docker ps -a -q)
+            docker-compose stop
+            docker-compose rm web
             docker pull andyi95/yamdb_final
-            docker rm $(docker ps -a -q)
-            docker rmi $(docker images -q)
-            touch .env
             # перед тем, как записывать новые строки стоит проверить их наличие
             if ! grep -q "SECRET_KEY" .env ; then
               echo SECRET_KEY="${{ secrets.SECRET_KEY }}" >> .env
