@@ -48,7 +48,7 @@ For the proper deployment you need to clone repository, copy `docker-compose.yam
   - `HOST`, `USER`, `SSH_KEY`/`PASSWORD`, `PASSPHRASE` - network address, username, private SSH-key (with a passphrase if used) or password, used for SSH deployment. Check the official [ssh-action](https://github.com/appleboy/ssh-action) repo for more parameters. 
   - `TELEGRAM_TOKEN`, `TELEGRAM_TO` - Telegram bot's token and user id for sending notifications. Check the [Telegram manuals](https://core.telegram.org/bots#6-botfather) to know more about Telegram bots creation and management.
 
-Furthermore, you may edit the `.env` file according to your current requirements as the existing fields are not overwritten with the new deployments.
+In future you may edit the `~/.env` file according to your current requirements as the existing fields are not overwritten with the new deployments.
 
 #### Initial configs
 
