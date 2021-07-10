@@ -5,7 +5,6 @@
 #### Fixed:
  - Fixed general code issues
  - Finished and corrected [README in English](/README-en.md)
- - GitHub Action deployment scripts moved to separate directories
  
 #### Added:
  - Copy base files on deploy
