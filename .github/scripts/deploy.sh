@@ -1,8 +1,5 @@
 #!/bin/bash
 
-wget https://raw.githubusercontent.com/andyi95/yamdb_final/master/docker-compose.yaml
-mkdir -p nginx/templates
-wget -O nginx/templates/default.conf.template https://raw.githubusercontent.com/andyi95/yamdb_final/master/nginx/templates/default.conf.template
 docker-compose stop
 docker-compose rm web
 docker pull andyi95/yamdb_final
