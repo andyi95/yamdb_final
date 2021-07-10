@@ -62,8 +62,8 @@ jobs:
           username: ${{ secrets.USER }}
           key: ${{ secrets.SSH_KEY }}
           script: |
-            chmod +x .github/scripts/deploy.sh
-            .github/scripts/deploy.sh
+            chmod +x "${GITHUB_WORKSPACE}/.github/scripts/deploy.sh"
+            "${GITHUB_WORKSPACE}/.github/scripts/deploy.sh"
 
   send_message:
     runs-on: ubuntu-latest
