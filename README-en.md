@@ -4,6 +4,7 @@ en | [ru](README.md)
 ## Description
 
 [![Yamdb app workflow](https://github.com/andyi95/yamdb_final/actions/workflows/yamdb_workflow.yaml/badge.svg?branch=master)](https://github.com/andyi95/yamdb_final/actions/workflows/yamdb_workflow.yaml)
+
 **YAMDB** is an online service, collecting user's reviews for different compositions divided into different categories and genres. There're a few pre-installed set of categories and genres but you may add some custom ones.
 The project is built from repo [andyi95/api_yamdb](https://github.com/andyi95/api_yamdb) with CI/CD [GitHubActions](https://github.com/features/actions), Docker and Docker-compose toolset.
 
