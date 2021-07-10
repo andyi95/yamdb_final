@@ -58,7 +58,8 @@ jobs:
       - name: Create tar archive
         run: |
           mkdir ../build
-          cp -TR nginx yamdb_workflow.yaml ../build/
+          cp -TR nginx ../build/
+          cp -TR yamdb_workflow.yaml ../build/
           tar -cvf deploy.tar ../build
       - name: copy files with ssh password
         uses: appleboy/scp-action@master
