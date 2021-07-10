@@ -52,6 +52,15 @@ jobs:
     runs-on: ubuntu-latest
 #    needs: build_and_push_to_docker_hub
     steps:
+      - name: test SSH connection
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USER }}
+          key: ${{ secrets.SSH_KEY }}
+          stack_file_name: docker-compose.yaml
+          script: |
+            echo "It's ok!"
       - name: copy base files via scp
         uses: appleboy/scp-action@v0.0.11
         with:
