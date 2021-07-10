@@ -57,7 +57,6 @@ jobs:
     needs: build_and_push_to_docker_hub
     steps:
       - name: Create tar archive
-        uses: actions/checkout@v2
         run: |
           ls -lta
           tar -cvf deploy.tar $GITHUB_WORKSPACE/nginx/ $GITHUB_WORKSPACE/.docker-compose.yaml
@@ -79,8 +78,8 @@ jobs:
             ls -lta
             tar -xvf deploy.tar
             ls -lta
-            chmod +x .github/scripts/deploy.sh
-            .github/scripts/deploy.sh
+            chmod +x .scripts/deploy.sh
+            .scripts/deploy.sh
 
   send_message:
     runs-on: ubuntu-latest
