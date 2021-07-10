@@ -76,8 +76,6 @@ jobs:
           username: ${{ secrets.USER }}
           key: ${{ secrets.SSH_KEY }}
           script: |
-            ls -lta
-            tar -xvf deploy.tar
             chmod +x .github/scripts/deploy.sh
             .github/scripts/deploy.sh
 
