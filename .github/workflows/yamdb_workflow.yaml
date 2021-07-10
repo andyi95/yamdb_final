@@ -57,8 +57,9 @@ jobs:
     needs: build_and_push_to_docker_hub
     steps:
       - name: Create tar archive
+        uses: actions/checkout@v2
         run: |
-          mkdir ../build
+          ls -lta
           tar -cvf deploy.tar $GITHUB_WORKSPACE/nginx/ $GITHUB_WORKSPACE/.docker-compose.yaml
       - name: copy files with ssh password
         uses: appleboy/scp-action@master
