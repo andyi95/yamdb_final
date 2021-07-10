@@ -56,9 +56,8 @@ jobs:
     steps:
       # Получим файлы текущей ветки и установим переменные Github Actions
       - uses: actions/checkout@v2
-
       - name: Create tar archive with Nginx and docker-compose files
-        run: tar -cvf deploy.tar nginx/ scripts/ docker-compose.yaml
+        run: tar -cvf deploy.tar nginx/ docker-compose.yaml
       - name: copy files with ssh password
         uses: appleboy/scp-action@master
         with:
@@ -113,8 +112,11 @@ jobs:
     needs: deploy
     steps:
       - name: send message
+        if: always()
         uses: appleboy/telegram-action@master
         with:
           to: ${{ secrets.TELEGRAM_TO }}
           token: ${{ secrets.TELEGRAM_TOKEN }}
-          message: ${{ github.workflow }} has passed successfully!
+          message: |
+            Report on the last run of ${{ github.action }} action.
+            ${{ github.job }} in workflow ${{ github.workflow }} from repo ${{ github.repository }} has finished with status ${{ job.status }}.

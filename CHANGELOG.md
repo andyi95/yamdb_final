@@ -10,6 +10,7 @@
  - Copy base files on deploy
  - Demo servers in Readme
  - Moved deployment script to a separate file
+ - Extended Action info in the notification
  
 ## 2021-07-06
 #### Added:
