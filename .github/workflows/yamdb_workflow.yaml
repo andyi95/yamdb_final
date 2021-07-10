@@ -59,7 +59,7 @@ jobs:
         run: |
           mkdir ../build
           cp -TR nginx ../build/
-          cp -TR yamdb_workflow.yaml ../build/
+          cp -TR docker-compose.yaml ../build/
           tar -cvf deploy.tar ../build
       - name: copy files with ssh password
         uses: appleboy/scp-action@master
@@ -76,6 +76,8 @@ jobs:
           username: ${{ secrets.USER }}
           key: ${{ secrets.SSH_KEY }}
           script: |
+            ls -lta
+            tar -xvf deploy.tar
             chmod +x .github/scripts/deploy.sh
             .github/scripts/deploy.sh
 
