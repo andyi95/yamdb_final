@@ -5,105 +5,65 @@ on: [push]
 jobs:
   tests:
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v2
     - name: Set up Python
       uses: actions/setup-python@v2
       with:
         python-version: 3.8.5
-#    - name: Install dependencies
-#      run: |
-#        python -m pip install --upgrade pip
-#        pip install flake8 pep8-naming flake8-broken-line flake8-return flake8-isort pytest
-#        pip install -r requirements.txt
-#    - name: Test for PEP8 requirements
-#      # Здесь логичнее разделить проверки по задачам
-#      run: flake8
-#    - name: Run pytest for project
-#      run: |
-#        echo SECRET_KEY="${{ secrets.SECRET_KEY }}" > .env
-#        export PYTHONPATH=.
-#        pytest
-#  build_and_push_to_docker_hub:
-#    name: Push Docker image to Docker Hub
-#    # Касательно веток - абсолютно согласен. И, по логике, одного условия достаточно, ведь
-#    # остальные этапы выполняются в зависимости от успешности текущего
-#    if: github.ref == 'refs/heads/master'
-#    runs-on: ubuntu-latest
-#    needs: tests
-#    steps:
-#      - name: Check out the repo
-#        uses: actions/checkout@v2
-#      - name: Set up Docker Buildx
-#        uses: docker/setup-buildx-action@v1
-#      - name: Login to Docker
-#        uses: docker/login-action@v1
-#        with:
-#          username: ${{ secrets.DOCKER_USERNAME }}
-#          password: ${{ secrets.DOCKER_PASSWORD }}
-#      - name: Push to Docker Hub
-#        uses: docker/build-push-action@v2
-#        with:
-#          push: true
-#          tags: andyi95/yamdb_final:latest
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install flake8 pep8-naming flake8-broken-line flake8-return flake8-isort pytest
+        pip install -r requirements.txt
+    - name: Test for PEP8 requirements
+      # Здесь логичнее разделить проверки по задачам
+      run: flake8
+    - name: Run pytest for project
+      run: |
+        echo SECRET_KEY="${{ secrets.SECRET_KEY }}" > .env
+        export PYTHONPATH=.
+        pytest
+
+  build_and_push_to_docker_hub:
+    name: Push Docker image to Docker Hub
+    # Касательно веток - абсолютно согласен. И, по логике, одного условия достаточно, ведь
+    # остальные этапы выполняются в зависимости от успешности текущего
+    if: github.ref == 'refs/heads/master'
+    runs-on: ubuntu-latest
+    needs: tests
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v2
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+      - name: Login to Docker
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+      - name: Push to Docker Hub
+        uses: docker/build-push-action@v2
+        with:
+          push: true
+          tags: andyi95/yamdb_final:latest
 
   deploy:
+    name: Deploy images on the destination server
+    if: github.ref == 'refs/heads/master'
     runs-on: ubuntu-latest
-#    needs: build_and_push_to_docker_hub
+    needs: build_and_push_to_docker_hub
     steps:
-      - name: copy base files via scp
-        uses: appleboy/scp-action@v0.0.11
-        with:
-          host: ${{ secrets.HOST }}
-          username: ${{ secrets.USER }}
-          key: ${{ secrets.SSH_KEY }}
-          overwrite: true
-          source: nginx/templates/, docker-compose.yaml
-          target: "/home/andrey/"
-          strip_components: 1
       - name: executing remote ssh commands to deploy
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USER }}
           key: ${{ secrets.SSH_KEY }}
-          stack_file_name: docker-compose.yaml
           script: |
-            docker-compose stop
-            docker-compose rm web
-            docker pull andyi95/yamdb_final
-            # Я думал насчёт такого варианта, но пугало то, что операнд > полностью перезаписывает файл,
-            # но предположим, что если нет SECRET_KEY, то нет и файла...
-            if ! grep -q "SECRET_KEY" .env ; then
-              echo SECRET_KEY="${{ secrets.SECRET_KEY }}" > .env
-            fi
-            if ! grep -q "DB_ENGINE" .env ; then
-              echo DB_ENGINE=${{ secrets.DB_ENGINE }} >> .env
-            fi
-            if ! grep -q "POSTGRES_DB" .env ; then
-              echo POSTGRES_DB=${{ secrets.DB_NAME }} >> .env
-            fi
-            if ! grep -q "POSTGRES_USER" .env ; then
-              echo POSTGRES_USER=${{ secrets.POSTGRES_USER }} >> .env
-            fi
-            if ! grep -q "POSTGRES_PASSWORD" .env ; then
-              echo POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }} >> .env
-            fi
-            if ! grep -q "DB_HOST" .env ; then
-              echo DB_HOST=${{ secrets.DB_HOST }} >> .env
-            fi
-            if ! grep -q "DB_PORT" .env ; then
-              echo DB_PORT=${{ secrets.DB_PORT }} >> .env
-            fi
-            if ! grep -q "HOSTS_LIST" .env ; then
-              echo HOSTS_LIST=${{ secrets.HOSTS_LIST }} >> .env
-            fi
-            if ! grep -q "DEBUG_MODE" .env ; then
-              debug_mode=${{ secrets.DEBUG_MODE }}
-            fi
-            [[ "$debug_mode" == "TRUE" ]] && echo DEBUG_MODE=$debug_mode >> .env || echo "DEBUG_MODE=FALSE" >> .env
-            docker-compose up -d
+            chmod +x .github/scripts/deploy.sh
+            ./.github/scripts/deploy.sh
 
   send_message:
     runs-on: ubuntu-latest

@@ -9,6 +9,7 @@
 #### Added:
  - Copy base files on deploy
  - Demo servers in Readme
+ - Moved deployment script to a separate file
  
 ## 2021-07-06
 #### Added:
