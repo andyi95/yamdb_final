@@ -58,7 +58,6 @@ jobs:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USER }}
           key: ${{ secrets.SSH_KEY }}
-          stack_file_name: docker-compose.yaml
           script: |
             echo "It's ok!"
       - name: copy base files via scp
@@ -77,7 +76,6 @@ jobs:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USER }}
           key: ${{ secrets.SSH_KEY }}
-          stack_file_name: docker-compose.yaml
           script: |
             docker-compose stop
             docker-compose rm web
