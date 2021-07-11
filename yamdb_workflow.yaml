@@ -28,9 +28,7 @@ jobs:
 
   build_and_push_to_docker_hub:
     name: Push Docker image to Docker Hub
-    # Касательно веток - абсолютно согласен. И, по логике, одного условия достаточно, ведь
-    # остальные этапы выполняются в зависимости от успешности текущего
-    if: github.ref == 'refs/heads/master'
+    if: ${{ github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main'}}
     runs-on: ubuntu-latest
     needs: tests
     steps:
@@ -51,11 +49,12 @@ jobs:
 
   deploy:
     name: Deploy images on the destination server
+    if: ${{ github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main'}}
     runs-on: ubuntu-latest
     needs: build_and_push_to_docker_hub
     steps:
-      # Получим файлы текущей ветки и установим переменные Github Actions
       - uses: actions/checkout@v2
+
       - name: Create tar archive with Nginx and docker-compose files
         run: tar -cvf deploy.tar nginx/ docker-compose.yaml
       - name: copy files with ssh password
@@ -77,46 +76,27 @@ jobs:
             docker-compose stop
             docker-compose rm web
             docker pull andyi95/yamdb_final
-            if ! grep -q "SECRET_KEY" .env ; then
-              echo SECRET_KEY="${{ secrets.SECRET_KEY }}" > .env
-            fi
-            if ! grep -q "DB_ENGINE" .env ; then
-              echo DB_ENGINE=${{ secrets.DB_ENGINE }} >> .env
-            fi
-            if ! grep -q "POSTGRES_DB" .env ; then
-              echo POSTGRES_DB=${{ secrets.DB_NAME }} >> .env
-            fi
-            if ! grep -q "POSTGRES_USER" .env ; then
-              echo POSTGRES_USER=${{ secrets.POSTGRES_USER }} >> .env
-            fi
-            if ! grep -q "POSTGRES_PASSWORD" .env ; then
-              echo POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }} >> .env
-            fi
-            if ! grep -q "DB_HOST" .env ; then
-              echo DB_HOST=${{ secrets.DB_HOST }} >> .env
-            fi
-            if ! grep -q "DB_PORT" .env ; then
-              echo DB_PORT=${{ secrets.DB_PORT }} >> .env
-            fi
-            if ! grep -q "HOSTS_LIST" .env ; then
-              echo HOSTS_LIST=${{ secrets.HOSTS_LIST }} >> .env
-            fi
-            if ! grep -q "DEBUG_MODE" .env ; then
-              debug_mode=${{ secrets.DEBUG_MODE }}
-            fi
-            [[ "$debug_mode" == "TRUE" ]] && echo DEBUG_MODE=$debug_mode >> .env || echo "DEBUG_MODE=FALSE" >> .env
+            echo SECRET_KEY="${{ secrets.SECRET_KEY }}" > .env
+            echo DB_ENGINE=${{ secrets.DB_ENGINE }} >> .env
+            echo POSTGRES_DB=${{ secrets.DB_NAME }} >> .env
+            echo POSTGRES_USER=${{ secrets.POSTGRES_USER }} >> .env
+            echo POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }} >> .env
+            echo DB_HOST=${{ secrets.DB_HOST }} >> .env
+            echo DB_PORT=${{ secrets.DB_PORT }} >> .env
+            echo HOSTS_LIST=${{ secrets.HOSTS_LIST }} >> .env
             docker-compose up -d
 
   send_message:
     runs-on: ubuntu-latest
+    if: ${{ always() }}
     needs: deploy
     steps:
       - name: send message
-        if: always()
         uses: appleboy/telegram-action@master
         with:
           to: ${{ secrets.TELEGRAM_TO }}
           token: ${{ secrets.TELEGRAM_TOKEN }}
           message: |
-            Report on the last run of ${{ github.action }} action.
-            ${{ github.job }} in workflow ${{ github.workflow }} from repo ${{ github.repository }} has finished with status ${{ job.status }}.
+            Report on the last run of ${{ github.workflow }}.
+            ${{ github.job }} in workflow ${{ github.action }} from repo ${{ github.repository }} has finished with status ${{ job.status }}.
+

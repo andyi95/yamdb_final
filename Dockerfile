@@ -6,9 +6,10 @@ LABEL release-date="2021-07-04"
 
 WORKDIR /code
 
-COPY requirements.txt /code/requirements.txt
+# полагаю, что мы уже должны быть в каталге /code :)
+COPY requirements.txt .
 
-RUN pip install --upgrade pip && pip install -r /code/requirements.txt
+RUN pip install --upgrade pip && pip install -r requirements.txt
 
 COPY . .
 
