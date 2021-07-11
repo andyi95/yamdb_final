@@ -99,4 +99,3 @@ jobs:
           message: |
             Report on the last run of ${{ github.workflow }}.
             ${{ github.job }} in workflow ${{ github.action }} from repo ${{ github.repository }} has finished with status ${{ job.status }}.
-
