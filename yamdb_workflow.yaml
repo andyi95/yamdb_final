@@ -18,12 +18,9 @@ jobs:
         pip install flake8 pep8-naming flake8-broken-line flake8-return flake8-isort pytest
         pip install -r requirements.txt
     - name: Test for PEP8 requirements
-      # Здесь логичнее разделить проверки по задачам
       run: flake8
     - name: Run pytest for project
       run: |
-        echo SECRET_KEY="${{ secrets.SECRET_KEY }}" > .env
-        export PYTHONPATH=.
         pytest
 
   build_and_push_to_docker_hub:
@@ -85,14 +82,10 @@ jobs:
             echo DB_PORT=${{ secrets.DB_PORT }} >> .env
             echo HOSTS_LIST=${{ secrets.HOSTS_LIST }} >> .env
             docker-compose up -d
-
-  send_message:
-    runs-on: ubuntu-latest
-    if: ${{ always() }}
-    needs: deploy
-    steps:
-      - name: send message
+      - name: send telegram message
+        # имхо удобнее получать оповещения о любых завершённых actions с развёрнутой информацией
         uses: appleboy/telegram-action@master
+        if: ${{ always() }}
         with:
           to: ${{ secrets.TELEGRAM_TO }}
           token: ${{ secrets.TELEGRAM_TOKEN }}
