@@ -22,8 +22,6 @@ jobs:
       run: flake8
     - name: Run pytest for project
       run: |
-        echo SECRET_KEY="${{ secrets.SECRET_KEY }}" > .env
-        export PYTHONPATH=.
         pytest
 
   build_and_push_to_docker_hub:
