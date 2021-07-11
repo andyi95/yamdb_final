@@ -37,7 +37,17 @@ sudo apt install docker-ce docker-compose -y
 ```
 Restart the server and check if Docker installation passed correctly with following commands: `service docker status` and `docker ps -a`.
  
-#### Clone repository
+#### Installation
+
+You may install the project in two ways:
+
+**GitHub Actions**
+
+Using the CI/CD GitHub Actions solution. To deploy fork the original repository to your profile, open Actions Secrets section in the repo settings and add new enviroments according to the list below. Start deploy with allowing Workflow run on the Actions tab.
+
+**Local deployment**
+
+Clone the repository to the deployment server `git clone https://github.com/andyi95/yamdb_final.git`, in the project directory copy the file `.env.sample` to`.env` and fill the variables in it according to the list. Run containers with command `docker-compose up -d`.
 
 Attention! Check that neither PostgreSQL, nor any web-services are running on your host before the deployment, otherwise check the Docker port mapping [guides](https://docs.docker.com/config/containers/container-networking/).
 
@@ -45,10 +55,9 @@ For the proper deployment you need to clone repository, copy `docker-compose.yam
   - `SECRET_KEY` - 20-symbols Django key used for generating cookies, crsf and save storages
   - `DB_HOST`, `DB_PORT`  - PostgreSQL server container's hostname and port. If necessary, you may use PostgreSQL server running on the host - for appropriate network configuration check the [docs section](https://docs.docker.com/compose/networking/) dedicated to port mapping between containers and host.
   - `DB_NAME`, `POSTGRES_USER`, `POSTGRES_PASSWORD` - database name, PostgreSQL username and password used for save connection.
-  - `HOST`, `USER`, `SSH_KEY`/`PASSWORD`, `PASSPHRASE` - network address, username, private SSH-key (with a passphrase if used) or password, used for SSH deployment. Check the official [ssh-action](https://github.com/appleboy/ssh-action) repo for more parameters. 
+  - `HOST`, `USER`, `SSH_KEY`/`PASSWORD`, `PASSPHRASE` (optional) - network address, username, private SSH-key (with a passphrase if used) or password, used for SSH deployment with GitHub Actions. Check the official [ssh-action](https://github.com/appleboy/ssh-action) repo for more parameters.
+  - `DB_ENGINE` (optional) - Django library for dabase connection and management. Might be useful in case of using a DB server different from Postgres. Default is `django.db.backends.postgresql`
   - `TELEGRAM_TOKEN`, `TELEGRAM_TO` - Telegram bot's token and user id for sending notifications. Check the [Telegram manuals](https://core.telegram.org/bots#6-botfather) to know more about Telegram bots creation and management.
-
-In future you may edit the `~/.env` file according to your current requirements as the existing fields are not overwritten with the new deployments.
 
 #### Initial configs
 

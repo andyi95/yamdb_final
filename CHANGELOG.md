@@ -2,7 +2,6 @@
 
 ## 2021-07-09
 
-Now let's test Workflow on test branch
 #### Fixed:
  - Fixed general code issues
  - Finished and corrected [README in English](/README-en.md)

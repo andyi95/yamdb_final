@@ -1,6 +1,7 @@
 import datetime
 import os
 
+from django.core.management.utils import get_random_secret_key
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -8,16 +9,14 @@ load_dotenv()
 os.environ['DJANGO_SETTINGS_MODULE'] = 'api_yamdb.settings'
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-# Дефолтное значние, которое используется при прохождении автотестов -
-# поскольку Яндекс не видит ключи репо, то тесты валятся
 SECRET_KEY = os.getenv(
-    'SECRET_KEY', default='jrwhqrtr5ZfuoAd9u5yURjuaHvZvpa24iqWhyGSHxAU7jBUfVb'
+    'SECRET_KEY', default=get_random_secret_key()
 )
 
 
 DEBUG = False
 
-ALLOWED_HOSTS = ['web', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = os.getenv('HOSTS_LIST', default=['127.0.0.1', 'localhost'])
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -65,12 +64,14 @@ WSGI_APPLICATION = 'api_yamdb.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.environ.get('POSTGRES_DB'),
-        'USER': os.environ.get('POSTGRES_USER'),
-        'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
-        'HOST': os.environ.get('DB_HOST'),
-        'PORT': os.environ.get('DB_PORT'),
+        'ENGINE': os.environ.get(
+            'DB_ENGINE', default='django.db.backends.postgresql'
+        ),
+        'NAME': os.environ['POSTGRES_DB'],
+        'USER': os.environ['POSTGRES_USER'],
+        'PASSWORD': os.environ['POSTGRES_PASSWORD'],
+        'HOST': os.environ['DB_HOST'],
+        'PORT': os.environ['DB_PORT'],
     }
 }
 
